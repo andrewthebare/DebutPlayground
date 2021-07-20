@@ -1,0 +1,51 @@
+
+<div>
+
+  {% assign collectionObject = section.settings.collections %}
+  {% assign narrowed = '' %}
+
+  {% assign releventTags = product.tags %}
+
+{% comment %} releventTags:
+{{releventTags}} {% endcomment %}
+
+  <ul class='flexGrid'>
+  {% assign omitTags = section.settings.omitTags | split: ',' %}
+  {% for foundTag in releventTags %}
+    {% unless omitTags contains foundTag %}
+      {% comment %} <h3>For Tag: {{foundTag}}</h3>       {% endcomment %}
+      {% for releventProduct in collections[foundTag].products %}
+
+
+        {% comment %} and releventProduct.option1 contains product.option1 {% endcomment %}
+        {% unless releventProduct.title == product.title  %}
+                  
+          <li class="flexChild">
+            {% include 'productFeedItem', max_height: 200, product: releventProduct %}
+          </li>
+        {% endunless %}
+      {% endfor %}    
+    {% endunless %}
+  {% endfor %}
+  </ul>
+
+</div>
+
+{% schema %}
+  {
+    "name": "ProductCollections",
+    "settings": [
+      {
+        "type": "collection",
+        "id": "collections",
+        "label": "Collections to Use"
+      },
+      {
+        "type": "text",
+        "id": "omitTags",
+        "label": "Tags to omit (Comma Seperated)"
+      }
+    
+    ]
+  }
+{% endschema %}
