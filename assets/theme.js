@@ -771,6 +771,8 @@ slate.Variants = (function() {
       if (this.enableHistoryState) {
         this._updateHistoryState(variant);
       }
+
+      window.location.reload();
     },
 
     /**

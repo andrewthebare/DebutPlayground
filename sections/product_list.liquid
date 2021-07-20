@@ -16,12 +16,23 @@
       {% comment %} <h3>For Tag: {{foundTag}}</h3>       {% endcomment %}
       {% for releventProduct in collections[foundTag].products %}
 
+        {% assign hasSize = false %}
+        
+        {% comment %} check the variants for a match {% endcomment %}
+        {% for variant in releventProduct.variants %}
+          {% if variant.option1 == product.selected_variant.option1 %}
+            {% assign hasSize = true %}
+          {% endif %}
+        {% endfor %}
+        
+        {% if product.selected_variant.option1 == nil %}
+          {% assign hasSize = true %}
+        {% endif %}
 
         {% comment %} and releventProduct.option1 contains product.option1 {% endcomment %}
-        {% unless releventProduct.title == product.title  %}
-                  
+        {% unless releventProduct.title == product.title or hasSize == false %}                  
           <li class="flexChild">
-            {% include 'productFeedItem', max_height: 200, product: releventProduct %}
+            {% include 'productFeedItem', max_height: 400, product: releventProduct %}
           </li>
         {% endunless %}
       {% endfor %}    
